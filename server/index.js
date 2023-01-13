@@ -12,16 +12,6 @@ app.use(express.json()); //Parses incoming JSON into req.body
 
 app.use("/api/auth", authRoutes);
 
-app.get("/", (request, response) => {
-  console.log("request made");
-  response.send("Hello");
-});
-
-app.get("/sqltest", (req, res) => {
-  console.log("Testing postgres");
-});
-
-//mongoose.connect(...) Time stamp 10:30 in long video
 const server = http.createServer(app);
 server.listen(process.env.PORT, () => {
   console.log(`Server is now running on port ${process.env.PORT}`);
@@ -36,6 +26,9 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
   console.log(`New connection from ${socket.id}`);
+  socket.on("create_game", (data) => {
+    console.log(`${data["author"]} created a new game`);
+  });
 
   socket.on("join_game", (name, gameId) => {
     socket.to(gameId, `${name} has joined the game`);

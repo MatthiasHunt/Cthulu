@@ -22,6 +22,7 @@ function Login() {
     password: "",
     confirmPassword: "",
   });
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { username, password } = values;
@@ -39,7 +40,7 @@ function Login() {
   };
 
   const handleGuest = async (event) => {
-    toast.info("You are are guest");
+    toast.info("You are a guest");
   };
 
   const handleChange = (event) => {
@@ -50,7 +51,7 @@ function Login() {
     <>
       <LoginFormContainer className="test">
         <form onSubmit={(e) => handleSubmit(e)}>
-          <div class="Brand">
+          <div className="Brand">
             <img src={Logo} alt="" />
             <h1>Login Page</h1>
           </div>

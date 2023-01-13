@@ -1,2 +1,5 @@
 # Cthulu
- Node/React Cthulu App
+
+Node/React Cthulu App
+
+TODO: Implement JWT Passport SHA256

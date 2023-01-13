@@ -48,6 +48,8 @@ exports.register = async (req, res, next) => {
   }
 };
 
+exports.logout = async (req, res, next) => {};
+
 exports.user = async (req, res, next) => {
   try {
     return res

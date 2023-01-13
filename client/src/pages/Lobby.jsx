@@ -1,42 +1,46 @@
-import io from "socket.io-client";
 import React, { useState } from "react";
-import Game from "./Game";
-import { Link } from "react-router-dom";
+import io from "socket.io-client";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import GameCard from "../components/GameCard";
+import NewGameDialog from "../components/NewGameDialog";
 
 const socket = io.connect("http://localhost:3001");
 
-function Lobby() {
-  const [name, setName] = useState("");
-  const [roomId, setRoomId] = useState("");
+const allGames = [
+  { status: "in progress", players: ["1", "2"], id: 1 },
+  { status: "waiting to start", players: ["1", "2", "3"], id: 2 },
+  { status: "completed", players: [], id: 3 },
+];
 
-  const joinGame = () => {
-    socket.emit("join_game", name, roomId);
+function Lobby() {
+  const navigate = useNavigate();
+  const [newGameDialog, setNewGameDialog] = useState(false);
+
+  const logout = () => {
+    localStorage.removeItem("app-user");
+    navigate("/login");
   };
 
-  return (
-    <div className="App">
-      <p>My front-end app. It's a pretty basic app</p>
-      <input
-        type="text"
-        name="name"
-        placeholder={"Name"}
-        onChange={(event) => {
-          setName(event.target.value);
-        }}
-      />
-      <input
-        type="text"
-        name="roomId"
-        placeholder={"RoomID"}
-        onChange={(event) => {
-          setRoomId(event.target.value);
-        }}
-      />
-      <button onClick={joinGame}>Click Me</button>
-      <Game socket={socket} />
-      <Link to={"/login"}>Click here to Login</Link>
+  return newGameDialog ? (
+    <NewGameDialog cancel={() => setNewGameDialog(false)} socket={socket} />
+  ) : (
+    <div>
+      <LobbyCard>
+        <button onClick={() => setNewGameDialog(true)}>START NEW GAME</button>
+      </LobbyCard>
+      {allGames.map((e) => (
+        <LobbyCard>
+          <GameCard status={e.status} players={e.players} />
+        </LobbyCard>
+      ))}
+      <button onClick={logout}>Logout</button>
     </div>
   );
 }
 
+const LobbyCard = styled.article`
+  font-size: 1.1rem;
+  font-weight: bold;
+`;
 export default Lobby;
