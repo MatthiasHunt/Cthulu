@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import styled from "styled-components";
-import Logo from "../assets/cthulu.jpg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { loginRoute } from "../utils/APIRoutes";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthFormContainer } from "../components/styled";
+import Button from "react-bootstrap/esm/Button";
+import Form from "react-bootstrap/esm/Form";
+import Container from "react-bootstrap/esm/Container";
 
 function Login() {
+  const [darkMode, setDarkMode] = useState(true);
   const navigate = useNavigate();
   const toastOptions = {
     position: "top-center",
@@ -18,14 +19,14 @@ function Login() {
   };
   const [values, setValues] = useState({
     username: "",
-    email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { username, password } = values;
+    toast.info(username);
+    toast.info(password);
     const { data } = await axios.post(loginRoute, {
       username,
       password,
@@ -48,48 +49,51 @@ function Login() {
   };
 
   return (
-    <>
-      <LoginFormContainer className="test">
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <div className="Brand">
-            <img src={Logo} alt="" />
-            <h1>Login Page</h1>
-          </div>
-          <input
+    <Container className="py-3 px-5">
+      <div className="Brand">
+        <h1>Login Page</h1>
+      </div>
+      <Form className="bg-danger" onSubmit={(e) => handleSubmit(e)}>
+        <Form.Group className="mb-3" controlId="formBasicUsername">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
             type="text"
-            placeholder="Username"
+            placeholder="Enter Username"
             name="username"
             onChange={(e) => handleChange(e)}
           />
-          <input
+        </Form.Group>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
             type="password"
-            placeholder="password"
+            placeholder="Password"
             name="password"
             onChange={(e) => handleChange(e)}
           />
-          <div class="Buttons">
-            <button type="submit" onClick={handleSubmit}>
-              Login
-            </button>
-            <button type="button" onClick={handleGuest}>
-              Continue as Guest
-            </button>
-          </div>
-          <span>
-            Don't have an account ? <Link to="/register">Create One.</Link>
-          </span>
-        </form>
-      </LoginFormContainer>
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+        <Button
+          type="button"
+          variant={darkMode ? "light" : "dark"}
+          onClick={handleGuest}
+        >
+          Continue as Guest
+        </Button>
+        <Button
+          variant={darkMode ? "light" : "dark"}
+          onClick={() => setDarkMode(!darkMode)}
+        >
+          Toggle Dark
+        </Button>
+      </Form>
+      <span>
+        Don't have an account ? <Link to="/register">Create One.</Link>
+      </span>
       <ToastContainer />
-    </>
+    </Container>
   );
 }
-
-const LoginFormContainer = styled(AuthFormContainer)`
-  .Buttons {
-    display: flex;
-    justify-content: center;
-  }
-`;
-
 export default Login;
