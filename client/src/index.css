@@ -22,7 +22,6 @@ body {
   max-width: 100vw;
   overflow: hidden;
   margin: 0;
-  color: var(--pizza-white);
   background-color: var(--pizza-red);
 }
 
@@ -34,10 +33,6 @@ h5,
 h6 {
   font-family: "Fuzzy Bubbles", serif;
   text-transform: uppercase;
-}
-
-a:visited {
-  color: yellow;
 }
 
 code {

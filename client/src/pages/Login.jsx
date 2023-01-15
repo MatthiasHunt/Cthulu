@@ -3,12 +3,13 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { loginRoute } from "../utils/APIRoutes";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/esm/Button";
 import Form from "react-bootstrap/esm/Form";
 import Container from "react-bootstrap/esm/Container";
 
-function Login() {
+function Login(props) {
+  const { setLogin } = props;
   const [darkMode, setDarkMode] = useState(true);
   const navigate = useNavigate();
   const toastOptions = {
@@ -35,7 +36,7 @@ function Login() {
       toast.error(data.message, toastOptions);
     }
     if (data.success === true) {
-      localStorage.setItem("app-user", JSON.stringify(data.user));
+      setLogin(JSON.stringify(data.user));
       return navigate("/");
     }
   };
@@ -89,9 +90,6 @@ function Login() {
           Toggle Dark
         </Button>
       </Form>
-      <span>
-        Don't have an account ? <Link to="/register">Create One.</Link>
-      </span>
       <ToastContainer />
     </Container>
   );

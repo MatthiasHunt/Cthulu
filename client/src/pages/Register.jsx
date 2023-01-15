@@ -3,13 +3,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { registerRoute } from "../utils/APIRoutes";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/esm/Container";
 import Form from "react-bootstrap/esm/Form";
 import Button from "react-bootstrap/esm/Button";
 
-function Register() {
+function Register(props) {
   const navigate = useNavigate();
+  const { setLogin } = props;
   const toastOptions = {
     position: "top-center",
     autoClose: 3000,
@@ -35,14 +36,14 @@ function Register() {
         toast.error(data.message, toastOptions);
       }
       if (data.success === true) {
-        localStorage.setItem("app-user", JSON.stringify(data.user));
+        setLogin(JSON.stringify(data.user));
         return navigate("/");
       }
     }
   };
 
   const handlePasswordValidation = () => {
-    const { password, confirmPassword, username, email } = values;
+    const { password, confirmPassword } = values;
     if (password !== confirmPassword) {
       toast.error(`Password and confirmation do not match`, toastOptions);
       return false;
@@ -101,10 +102,6 @@ function Register() {
           <Button variant="primary" type="submit" onClick={handleSubmit}>
             Create New Account
           </Button>
-          <span>
-            Already have an account ?{" "}
-            <Link to="/login">Click here to login</Link>
-          </span>
         </Form>
       </Container>
       <ToastContainer />
