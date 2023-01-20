@@ -1,12 +1,9 @@
 import React from "react";
 
-function NewGameDialog({ cancel, socket }) {
+function NewGameDialog({ cancel, socket, host }) {
   const createGame = async () => {
-    const gameParams = {
-      author: "matthias",
-      status: "waiting to start",
-      players: ["matthias"],
-    };
+    const gameParams = { host: JSON.parse(host) };
+    // const gameParams = "test";
     await socket.emit("create_game", gameParams);
   };
   return (

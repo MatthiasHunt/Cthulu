@@ -20,7 +20,7 @@ export default function App() {
         <Routes>
           <Route
             path="/"
-            element={user ? <Lobby /> : <Navigate to="/login" />}
+            element={user ? <Lobby user={user} /> : <Navigate to="/login" />}
           />
           <Route path="/login" element={<Login setLogin={setUser} />} />
           <Route path="/register" element={<Register setLogin={setUser} />} />
